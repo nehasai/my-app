@@ -2,7 +2,7 @@ pipeline{
    agent any
    
    stages { 
-      stage ('compile stage') {
+     stage('compile stage') {
 	  
 	      steps {
 		      withMaven(maven : 'LocalMaven'){
@@ -10,7 +10,7 @@ pipeline{
 			  }  
 			}
 	  }
-	   stage ('Testing Stage') {
+	   stage('Testing Stage') {
 	   
 	   steps {
 	        withMaven(maven : 'LocalMaven') {
@@ -18,7 +18,7 @@ pipeline{
 			}
 	   }
 	}
-       stage ('Deployment Stage') {
+       stage('Deployment Stage') {
            
 		  steps {
               withMaven(maven : 'LocalMaven'){
