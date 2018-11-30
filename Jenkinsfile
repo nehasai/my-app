@@ -1,19 +1,31 @@
-node{
-   stage('SCM Checkout'){
-     git 'https://github.com/javahometech/my-app'
-   }
-   stage('Compile-Package'){
-      // Get maven home path
-      def mvnHome =  tool name: 'LocalMaven', type: 'maven'   
-      sh "${mvnHome}/bin/mvn package"
-   }
-  # stage('Slack Notification'){
-  #     slackSend baseUrl: 'https://hooks.slack.com/services/',
-  #     channel: '#jenkins-pipeline-demo',
-  #     color: 'good', 
-  #    message: 'Welcome to Jenkins, Slack!', 
-  #    teamDomain: 'javahomecloud',
-  #    tokenCredentialId: 'slack-demo'
+pipeline{
+   agent any
+   
+   stages { 
+      stage ('compile stage') {
+	  
+	      steps {
+		      withMaven(maven : 'LocalMaven'){
+			      sh 'mvn clean compile'
+			  }  
+			}
+	  }
+	   stage ('Testing Stage') {
+	   
+	   steps {
+	        withMaven(maven : 'LocalMaven') {
+			    sh 'mvn test'
+			}
+	   }
+	}
+       stage ('Deployment Stage') {
+           
+		  steps {
+              withMaven(maven : 'LocalMaven'){
+	              sh 'mvn deploy'		  
+			  }	  
+		  }	   
+	   }
    }
 }
 
